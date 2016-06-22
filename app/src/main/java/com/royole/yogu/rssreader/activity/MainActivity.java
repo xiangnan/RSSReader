@@ -9,8 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.royole.yogu.rssreader.R;
 import com.royole.yogu.rssreader.adapter.PagerTabAdapter;
 
-public class MainActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+public class MainActivity extends BaseActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PagerTabAdapter adapter;
@@ -20,20 +19,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        initTitleBar("RSSReader",false);
+        initTabView();
     }
 
-    private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    /**
+     * ViewPager+FragmentStatePagerAdapter+TabLayout implement TabView
+     */
+    private void initTabView() {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("新闻"));
-        tabLayout.addTab(tabLayout.newTab().setText("体育"));
-        tabLayout.addTab(tabLayout.newTab().setText("娱乐"));
-        tabLayout.addTab(tabLayout.newTab().setText("科技"));
+        String[] tabs = getResources().getStringArray(R.array.tabs);
+        for(String tab : tabs){
+            tabLayout.addTab(tabLayout.newTab().setText(tab));
+        }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
         viewPager = (ViewPager) findViewById(R.id.pager);
         adapter = new PagerTabAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());

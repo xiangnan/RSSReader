@@ -15,9 +15,10 @@ import com.royole.yogu.rssreader.R;
  */
 
 
-public class SportsTabFragment extends Fragment {
+public class CarTabFragment extends BaseTabFragment {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sports_tab, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setmUrl("http://auto.qq.com/gouche/hangqing09/rss.xml");
     }
 }

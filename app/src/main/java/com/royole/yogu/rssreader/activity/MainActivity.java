@@ -2,9 +2,7 @@ package com.royole.yogu.rssreader.activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
 import com.royole.yogu.rssreader.R;
 import com.royole.yogu.rssreader.adapter.PagerTabAdapter;
@@ -19,18 +17,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initTitleBar("RSSReader",false);
+        initTitleBar("RSSReader", false);
         initTabView();
     }
 
     /**
-     * ViewPager+FragmentStatePagerAdapter+TabLayout implement TabView
+     * ViewPager + FragmentStatePagerAdapter + TabLayout implement TabHost
      */
     private void initTabView() {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         String[] tabs = getResources().getStringArray(R.array.tabs);
-        for(String tab : tabs){
+        for (String tab : tabs) {
             tabLayout.addTab(tabLayout.newTab().setText(tab));
         }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -38,6 +36,14 @@ public class MainActivity extends BaseActivity {
         adapter = new PagerTabAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+        /**
+         * Set the number of pages that should be retained to either side of the current page in the view hierarchy in an idle state. Pages beyond this limit will be recreated from the adapter when needed.
+         This is offered as an optimization. If you know in advance the number of pages you will need to support or have lazy-loading mechanisms in place on your pages,
+         tweaking this setting can have benefits in perceived smoothness of paging animations and interaction. If you have a small number of pages (3-4) that you can keep active all at once,
+         less time will be spent in layout for newly created view subtrees as the user pages back and forth.
+         You should keep this limit low, especially if your pages have complex layouts. This setting defaults to 1.
+         */
+        viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

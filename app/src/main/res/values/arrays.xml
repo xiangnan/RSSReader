@@ -2,8 +2,8 @@
 <resources>
     <string-array name="tabs">
         <item>新闻</item>
-        <item>体育 </item>
-        <item>娱乐</item>
+        <item>购车</item>
+        <item>财经</item>
         <item>科技</item>
     </string-array>
 </resources>

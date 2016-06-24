@@ -15,9 +15,10 @@ import com.royole.yogu.rssreader.R;
  */
 
 
-public class TechTabFragment extends Fragment {
+public class TechTabFragment extends BaseTabFragment {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tech_tab, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setmUrl("http://tech.qq.com/web/webnews/rss_11.xml");
     }
 }

@@ -16,9 +16,10 @@ import com.royole.yogu.rssreader.R;
  */
 
 
-public class NewsTabFragment extends Fragment {
+public class NewsTabFragment extends BaseTabFragment {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_news_tab, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setmUrl("http://news.qq.com/newsgn/rss_newsgn.xml");
     }
 }

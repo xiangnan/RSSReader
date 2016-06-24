@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.royole.yogu.rssreader.fragment.EntertainmentTabFragment;
+import com.royole.yogu.rssreader.fragment.FinanceTabFragment;
 import com.royole.yogu.rssreader.fragment.NewsTabFragment;
-import com.royole.yogu.rssreader.fragment.SportsTabFragment;
+import com.royole.yogu.rssreader.fragment.CarTabFragment;
 import com.royole.yogu.rssreader.fragment.TechTabFragment;
 
 /**
@@ -32,10 +32,10 @@ public class PagerTabAdapter extends FragmentStatePagerAdapter {
                 NewsTabFragment newsTab = new NewsTabFragment();
                 return newsTab;
             case 1:
-                SportsTabFragment sportsTab = new SportsTabFragment();
+                CarTabFragment sportsTab = new CarTabFragment();
                 return sportsTab;
             case 2:
-                EntertainmentTabFragment entertainmentTab = new EntertainmentTabFragment();
+                FinanceTabFragment entertainmentTab = new FinanceTabFragment();
                 return entertainmentTab;
             case 3:
                 TechTabFragment techTab = new TechTabFragment();

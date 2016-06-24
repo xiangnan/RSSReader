@@ -26,7 +26,7 @@ public class ArticleDetaisActivity extends BaseActivity {
         setContentView(R.layout.activity_article_detais);
         Intent intent = getIntent();
         mURL = intent.getStringExtra("url");
-        initTitleBar("", true);
+        initTitleBar(intent.getStringExtra("title"), true);
         initView(savedInstanceState);
     }
 
@@ -43,7 +43,7 @@ public class ArticleDetaisActivity extends BaseActivity {
     // End lifecycle
 
     private void initView(Bundle savedInstanceState) {
-        mWebViewLayout = (FrameLayout) findViewById(R.id.fl_articleDetails);
+        mWebViewLayout = (FrameLayout) findViewById(R.id.webViewContainer);
         mDetailsWebView = new WebView(getApplicationContext());
         WebSettings setting = mDetailsWebView.getSettings();
         setting.setJavaScriptEnabled(true);// js enable

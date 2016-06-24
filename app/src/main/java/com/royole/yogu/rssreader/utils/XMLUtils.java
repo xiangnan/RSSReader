@@ -7,7 +7,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -94,8 +93,6 @@ public class XMLUtils {
                                 if (eventType == XmlPullParser.START_TAG) {
                                     int i = nodes.indexOf(pullParser.getName());
                                     if (i != -1) {
-                                        String t1 = nodes.get(i);
-//                                        String t2 = pullParser.nextText();
                                         obj.setParamater(nodes.get(i), pullParser.nextText());//nextText() get the text between tag,while the eventType must be START_TAG
                                     }
                                 }
@@ -105,9 +102,6 @@ public class XMLUtils {
                         }
                         break;
                     case XmlPullParser.END_TAG:
-                        if (pullParser.getName().equals(beginNode)) {
-                            objs.add(obj);
-                        }
                         break;
                 }
                 eventType = pullParser.next();

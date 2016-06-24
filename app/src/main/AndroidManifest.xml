@@ -24,6 +24,12 @@
             android:process="com.royole.yogu.rssreader.web"
             android:label="@string/title_activity_article_detais" >
         </activity>
+        <!--it could be accessed if set the export flag to true-->
+        <provider
+            android:authorities="com.royole.yogu.rssreader.db"
+            android:name=".db.RssContentProvider"
+            android:exported="false"
+            android:multiprocess="true"/>
     </application>
 
 </manifest>

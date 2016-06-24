@@ -19,7 +19,7 @@ public class FinanceTabFragment extends BaseTabFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setmUrl("http://finance.qq.com/financenews/breaknews/rss_finance.xml");
+        setUrlAndTitle("http://finance.qq.com/financenews/breaknews/rss_finance.xml",getResources().getStringArray(R.array.tabs)[2]);
     }
 
 }

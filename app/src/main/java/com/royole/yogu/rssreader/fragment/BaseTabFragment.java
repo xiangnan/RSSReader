@@ -29,14 +29,16 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private String TAG = BaseTabFragment.class.getSimpleName();
 
-    private String mUrl;
+    private String mUrl;// Tab URL
+    private String mTab;// Tab Name
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
     private SwipeRefreshListAdapter mAdapter;
     private List<Article> mArticles = new ArrayList<Article>();
 
-    public void setmUrl(String mUrl) {
-        this.mUrl = mUrl;
+    public void setUrlAndTitle(String url,String tab) {
+        this.mUrl = url;
+        this.mTab = tab;
     }
 
     // lifecycle
@@ -85,7 +87,10 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BaseTabFragment.this.getActivity(), ArticleDetaisActivity.class);
-                intent.putExtra("url", mArticles.get(position).getLink());
+                Bundle data = new Bundle();
+                data.putString("url", mArticles.get(position).getLink());
+                data.putString("title", mTab);
+                intent.putExtras(data);
                 BaseTabFragment.this.getActivity().startActivity(intent);
             }
         });

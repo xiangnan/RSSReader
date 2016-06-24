@@ -58,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
      * @param aBundle
      * @param aRequestCode
      */
-    protected void startOtherActivity(Class<?> aTargetClass, Bundle aBundle,
+    public void startOtherActivity(Class<?> aTargetClass, Bundle aBundle,
                                       int aRequestCode) {
         Intent i = new Intent(this, aTargetClass);
         if (aBundle != null) {

@@ -19,6 +19,6 @@ public class TechTabFragment extends BaseTabFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setmUrl("http://tech.qq.com/web/webnews/rss_11.xml");
+        setUrlAndTitle("http://tech.qq.com/web/webnews/rss_11.xml",getResources().getStringArray(R.array.tabs)[3]);
     }
 }

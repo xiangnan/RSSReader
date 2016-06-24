@@ -19,6 +19,6 @@ public class CarTabFragment extends BaseTabFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setmUrl("http://auto.qq.com/gouche/hangqing09/rss.xml");
+        setUrlAndTitle("http://auto.qq.com/gouche/hangqing09/rss.xml",getResources().getStringArray(R.array.tabs)[1]);
     }
 }

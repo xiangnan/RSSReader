@@ -1,6 +1,10 @@
 package com.royole.yogu.rssreader.model;
 
+import android.database.Cursor;
+
 import java.util.ArrayList;
+
+import app.Constants;
 
 /**
  * News Article Model
@@ -10,6 +14,7 @@ import java.util.ArrayList;
 
 
 public class Article extends BaseObject{
+    private long aID;
     /** 新闻标题 */
     private String title;
     /** 描述 */
@@ -23,13 +28,32 @@ public class Article extends BaseObject{
 
     public Article() {
     }
+    public static Article getNotefromCursor(Cursor cursor){
+        Article article = new Article();
+        article.setaID(cursor.getLong(cursor.getColumnIndex(Constants.COLUMN_ID)));
+        article.setTitle(cursor.getString(cursor.getColumnIndex(Constants.COLUMN_TITLE)));
+        article.setDescription(cursor.getString(cursor.getColumnIndex(Constants.COLUMN_DESCRIPTION)));
+        article.setPubDate(cursor.getString(cursor.getColumnIndex(Constants.COLUMN_PUB_DATE)));
+        article.setLink(cursor.getString(cursor.getColumnIndex(Constants.COLUMN_LINK)));
+        article.setAuthor(cursor.getString(cursor.getColumnIndex(Constants.COLUMN_AUTHOR)));
+        return article;
+    }
 
-    public Article(String title, String description, String pubDate, String link, String author) {
+    public Article(long aID, String title, String description, String pubDate, String link, String author) {
+        this.aID = aID;
         this.title = title;
         this.description = description;
         this.pubDate = pubDate;
         this.link = link;
         this.author = author;
+    }
+
+    public void setaID(long aID) {
+        this.aID = aID;
+    }
+
+    public long getaID() {
+        return aID;
     }
 
     public String getTitle() {
@@ -85,8 +109,6 @@ public class Article extends BaseObject{
 
 
     // Override BaseObject
-
-
     @Override
     public ArrayList<String> getNodes() {
         ArrayList<String> nodes = new ArrayList<String>(){{add("title");add( "description");add("pubDate");add( "link"); add("author");}};

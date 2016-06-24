@@ -5,7 +5,7 @@
 
     <include android:id="@+id/toolbar" layout="@layout/title_bar"/>
     <FrameLayout
-        android:id="@+id/fl_articleDetails"
+        android:id="@+id/webViewContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">

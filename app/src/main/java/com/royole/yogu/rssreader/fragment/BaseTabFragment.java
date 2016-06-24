@@ -1,5 +1,6 @@
 package com.royole.yogu.rssreader.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.royole.yogu.rssreader.R;
+import com.royole.yogu.rssreader.activity.ArticleDetaisActivity;
 import com.royole.yogu.rssreader.adapter.SwipeRefreshListAdapter;
 import com.royole.yogu.rssreader.model.Article;
 import com.royole.yogu.rssreader.utils.XMLUtils;
@@ -47,6 +50,7 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView...");
+        // already avoid call onCreateView when switch the tab in MainActivity
         View rootView = inflater.inflate(R.layout.fragment_base, container, false);
         initView(rootView);
         return rootView;
@@ -77,8 +81,19 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                      }
                                  }
         );
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(BaseTabFragment.this.getActivity(), ArticleDetaisActivity.class);
+                intent.putExtra("url", mArticles.get(position).getLink());
+                BaseTabFragment.this.getActivity().startActivity(intent);
+            }
+        });
     }
 
+    /**
+     * !!! To optimize !!!
+     */
     private void fetchArticles() {
         // showing refresh animation before making http call
         mSwipeRefreshLayout.setRefreshing(true);

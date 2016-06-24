@@ -9,6 +9,7 @@ import android.view.View;
 import com.royole.yogu.rssreader.R;
 
 /**
+ * All the Activity should implement from this Base
  * Created by xiangnan on 16/6/22.
  */
 public class BaseActivity extends AppCompatActivity {
@@ -19,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * init TitleBar
+     * init TitleBar( This titleBar use Android Toolbar )
      * @param title
      * @param isBackBtnShowing if the navigation back Button showing
      */

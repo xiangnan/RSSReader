@@ -17,7 +17,7 @@ import app.Constants;
 /**
  * 1.SharedPreferences– this tools is used to save primitive data in Android. Primitive data types are data that has been decomposed into units that are native to the programming language (Java in this case).
  * 2.Device Storage – if you want to save the pictures to your device
- * 3.SQLite database
+ * 3.SQLite
  * 4.File
  * 5.Network
  * Author  yogu

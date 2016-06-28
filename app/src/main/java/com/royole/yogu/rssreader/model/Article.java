@@ -4,7 +4,7 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 
-import app.Constants;
+import com.royole.yogu.rssreader.app.Constants;
 
 /**
  * News Article Model

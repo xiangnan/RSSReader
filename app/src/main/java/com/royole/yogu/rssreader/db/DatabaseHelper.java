@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import app.Constants;
+import com.royole.yogu.rssreader.app.Constants;
 
 /**
  * Copyright (C) 2015, Royole Corporation all rights reserved.
@@ -20,24 +20,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_NOTE);
+        db.execSQL(createTableSQL(Constants.CARS_TABLE, Constants.COLUMNS));
+        db.execSQL(createTableSQL(Constants.FINANCES_TABLE, Constants.COLUMNS));
+        db.execSQL(createTableSQL(Constants.NEWS_TABLE, Constants.COLUMNS));
+        db.execSQL(createTableSQL(Constants.TECHS_TABLE, Constants.COLUMNS));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Constants.ARTICLES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.CARS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.FINANCES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.NEWS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TECHS_TABLE);
         onCreate(db);
     }
 
-    private static final String CREATE_TABLE_NOTE = "create table "
-            + Constants.ARTICLES_TABLE
-            + "("
-            + Constants.COLUMN_ID + " integer primary key autoincrement, "
-            + Constants.COLUMN_TITLE + " text not null, "
-            + Constants.COLUMN_DESCRIPTION + " text not null, "
-            + Constants.COLUMN_PUB_DATE + " text not null, "
-            + Constants.COLUMN_LINK + " text not null, "
-            + Constants.COLUMN_AUTHOR + " text not null " + ")";
+    private String createTableSQL(String tableName, String[] columns) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("create table ");
+        sb.append(tableName);
+        sb.append(" (");
+        sb.append(columns[0]);
+        sb.append(" integer primary key autoincrement ");
+
+        for (int i = 1; i < columns.length; i++) {
+            sb.append(", ");
+            sb.append(columns[i]);
+        }
+        sb.append(" ) ");
+        String sql = sb.toString();
+        return sql;
+    }
 }
+

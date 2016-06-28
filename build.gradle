@@ -15,5 +15,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        //To support SQLScout Live Device Connection
+        maven {
+            url 'http://www.idescout.com/maven/repo/'
+        }
     }
 }

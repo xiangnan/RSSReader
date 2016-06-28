@@ -1,9 +1,12 @@
 package com.royole.yogu.rssreader.utils;
 
+import android.os.StrictMode;
+
 import com.royole.yogu.rssreader.model.Article;
 import com.royole.yogu.rssreader.model.BaseObject;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
@@ -114,35 +117,17 @@ public class XMLUtils {
         return null;
     }
 
-    public static void getArticleXML(final String urlString, final List<Article> articles) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(urlString);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                    conn.setReadTimeout(10000 /* milliseconds */);
-                    conn.setConnectTimeout(15000 /* milliseconds */);
-                    conn.setRequestMethod("GET");
-                    conn.setDoInput(true);
-                    conn.connect();
-
-                    InputStream stream = conn.getInputStream();
-                    xmlFactoryObject = XmlPullParserFactory.newInstance();
-                    XmlPullParser myparser = xmlFactoryObject.newPullParser();
-
-                    myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-                    myparser.setInput(stream, "gb2312");
-
-                    articles.addAll(streamParam2Model(new Article(), myparser));
-                    stream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        });
-        thread.start();
+    public static List<Article> streamToArticles(InputStream stream) {
+        try {
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myparser = xmlFactoryObject.newPullParser();
+            myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myparser.setInput(stream, "gb2312");
+            return streamParam2Model(new Article(), myparser);
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 }

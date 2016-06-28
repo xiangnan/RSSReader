@@ -20,6 +20,6 @@ public class NewsTabFragment extends BaseTabFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUrlAndTitle("http://news.qq.com/newsgn/rss_newsgn.xml",getResources().getStringArray(R.array.tabs)[0]);
+        setUrlAndTitle("http://news.qq.com/newsgn/rss_newsgn.xml",NEWS_TAB);
     }
 }

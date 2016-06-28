@@ -1,7 +1,9 @@
 package com.royole.yogu.rssreader.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -14,9 +16,22 @@ import android.widget.ListView;
 import com.royole.yogu.rssreader.R;
 import com.royole.yogu.rssreader.activity.ArticleDetaisActivity;
 import com.royole.yogu.rssreader.adapter.SwipeRefreshListAdapter;
+import com.royole.yogu.rssreader.app.Constants;
+import com.royole.yogu.rssreader.db.ArticleManager;
+import com.royole.yogu.rssreader.db.RssContentProvider;
+import com.royole.yogu.rssreader.http.HttpRequest;
+import com.royole.yogu.rssreader.http.HttpRequestTask;
+import com.royole.yogu.rssreader.http.HttpResponse;
 import com.royole.yogu.rssreader.model.Article;
 import com.royole.yogu.rssreader.utils.XMLUtils;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +44,52 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private String TAG = BaseTabFragment.class.getSimpleName();
 
+    /**
+     * Enums often require more than twice as much memory as static constants. You should strictly avoid using enums on Android.
+     */
+    //1 define the constant
+    public static final int NEWS_TAB = 0;
+    public static final int CAR_TAB = 1;
+    public static final int FINANCE_TAB = 2;
+    public static final int TECH_TAB = 3;
+    // 2 @IntDef include the constant
+    @IntDef({CAR_TAB, FINANCE_TAB,NEWS_TAB,TECH_TAB})
+    // 3 @Retention define the policy
+    @Retention(RetentionPolicy.SOURCE)
+    // 4 declare the constructor
+    public @interface Tab {}
+    // End @IntDef Enum
+
     private String mUrl;// Tab URL
     private String mTab;// Tab Name
+    private Uri mUri;// Tab Content Provider Uri
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
     private SwipeRefreshListAdapter mAdapter;
     private List<Article> mArticles = new ArrayList<Article>();
 
-    public void setUrlAndTitle(String url,String tab) {
+    public void setUrlAndTitle(String url,@Tab int tab) {
         this.mUrl = url;
-        this.mTab = tab;
+        switch (tab){
+            case CAR_TAB:
+                mTab = getResources().getStringArray(R.array.tabs)[CAR_TAB];
+                mUri = RssContentProvider.CAR_CONTENT_URI;
+                break;
+            case FINANCE_TAB:
+                mTab = getResources().getStringArray(R.array.tabs)[FINANCE_TAB];
+                mUri = RssContentProvider.FINANCE_CONTENT_URI;
+                break;
+            case NEWS_TAB:
+                mTab = getResources().getStringArray(R.array.tabs)[NEWS_TAB];
+                mUri = RssContentProvider.NEWS_CONTENT_URI;
+                break;
+            case TECH_TAB:
+                mTab = getResources().getStringArray(R.array.tabs)[TECH_TAB];
+                mUri = RssContentProvider.TECH_CONTENT_URI;
+                break;
+            default:
+                break;
+        }
     }
 
     // lifecycle
@@ -77,9 +128,9 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mSwipeRefreshLayout.post(new Runnable() {
                                      @Override
                                      public void run() {
-                                         mSwipeRefreshLayout.setRefreshing(true);
-
+                                         getFromLocalCache();
                                          fetchArticles();
+                                         updateLocalCache();
                                      }
                                  }
         );
@@ -96,16 +147,45 @@ public class BaseTabFragment extends Fragment implements SwipeRefreshLayout.OnRe
         });
     }
 
+    private void updateLocalCache() {
+        ArticleManager.newInstance(getActivity()).deleteAll(mUri);
+        ArticleManager.newInstance(getActivity()).create(mArticles, mUri);
+    }
+
+    /**
+     * get articles list from database first
+     */
+    private void getFromLocalCache() {
+        mArticles.addAll(ArticleManager.newInstance(getActivity()).getAllArticles(mUri));
+        mAdapter.notifyDataSetChanged();
+    }
+
     /**
      * !!! To optimize !!!
      */
     private void fetchArticles() {
         // showing refresh animation before making http call
         mSwipeRefreshLayout.setRefreshing(true);
-        XMLUtils.getArticleXML(mUrl, mArticles);
-        mAdapter.notifyDataSetChanged();
-        // stopping swipe refresh
-        mSwipeRefreshLayout.setRefreshing(false);
+
+        new HttpRequestTask(
+                new HttpRequest(mUrl, HttpRequest.GET),
+                new HttpRequest.Handler() {
+                    @Override
+                    public void response(HttpResponse response) {
+                        if (response.code == 200) {
+                            try {
+                                mArticles.clear();
+                                mArticles.addAll(XMLUtils.streamToArticles(new ByteArrayInputStream(response.body.getBytes("gb2312"))));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        // stopping swipe refresh
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                    }
+                }).execute();
     }
 
     // Private - M

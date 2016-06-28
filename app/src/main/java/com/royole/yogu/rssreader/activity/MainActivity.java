@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 
+import com.idescout.sql.SqlScoutServer;
 import com.royole.yogu.rssreader.R;
 import com.royole.yogu.rssreader.adapter.PagerTabAdapter;
 
@@ -15,6 +16,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // SQLScout Live Device Connection
+//        SqlScoutServer.create(this, getPackageName());
+
         setContentView(R.layout.activity_main);
 
         initTitleBar("RSSReader", false);

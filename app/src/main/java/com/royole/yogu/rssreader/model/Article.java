@@ -1,6 +1,7 @@
 package com.royole.yogu.rssreader.model;
 
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -73,7 +74,11 @@ public class Article extends BaseObject{
     }
 
     public String getPubDate() {
-        return pubDate;
+        if (TextUtils.isEmpty(pubDate)){
+            return pubDate;
+        }else {
+            return pubDate.substring(0, 10);
+        }
     }
 
     public void setPubDate(String pubDate) {
